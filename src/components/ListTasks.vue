@@ -7,7 +7,7 @@
     >
       <v-list-subheader>General</v-list-subheader>
       <v-list-item
-        v-for="task, index in props.tasks"
+        v-for="task, index in taskStore.tasks"
         :key="index"
         :value="index"
       >
@@ -36,24 +36,31 @@
               </v-btn>
             </template>
             <v-list>
-              <v-list-item value="1">
-                <v-list-item-title>Editar</v-list-item-title>
+              <v-list-item value="1" @click="taskStore.toggleEdit(index)">
+                <v-list-item-title >Editar</v-list-item-title>
               </v-list-item>
-              <v-list-item value="2">
-                <v-list-item-title>Deletar</v-list-item-title>
+              <v-list-item value="2" @click="taskStore.toggleDelete(index)">
+                <v-list-item-title >Deletar</v-list-item-title>
               </v-list-item>
             </v-list>
           </v-menu>
         </template>
       </v-list-item>
     </v-list>
+    <DialogTaskFields
+      :task="taskStore.tasks[taskStore.indexTaskSelected]"
+    />
+
+    <DialogDelete />
   </div>
 </template>
 
 <script setup>
 import  { defineProps } from 'vue'
+import DialogTaskFields from '@/components/DialogTaskFields.vue'
+import DialogDelete from '@/components/DialogDelete.vue'
+import { useTaskStore } from '@/stores/task.js'
 
-const props = defineProps({
-  tasks: Object
-})
+const taskStore = useTaskStore();
+
 </script>
