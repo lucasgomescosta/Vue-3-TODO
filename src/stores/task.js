@@ -1,15 +1,11 @@
 // stores/counter.js
 import { defineStore } from 'pinia'
-import { useAlertStore } from '@stores/alert';
+import { useAlertStore } from './alert.js';
 const alertStore = useAlertStore();
 
 export const useTaskStore = defineStore('task', {
   state: () => ({
-    tasks: [
-      { title: 'Estudar Vue', description: 'Estudar vue com Vuetify' },
-      { title: 'Ler documentação', description: 'Ler a documentação do Vuetify' },
-      { title: 'Task 3', description: 'Description for task 3' },
-    ],
+    tasks: [],
     titleTaskCreating: '',
     showDialogDelete: false,
     indexTaskSelected: 0,
@@ -25,18 +21,23 @@ export const useTaskStore = defineStore('task', {
       });
       this.titleTaskCreating = '';
       this.saveLocalData();
-      alertStore.notifyAlert();
+      alertStore.notifyAlertCreated();
     },
     deleteTask() {
       this.tasks.splice(this.indexTaskSelected, 1);
       this.toggleDelete();
       this.saveLocalData();
+      alertStore.notifyAlertDeleted();
+    },
+    updateTask() {
+      this.saveLocalData();
+      this.toggleEdit();
+      alertStore.notifyAlertUpdated();
     },
     toggleEdit(index) {
       this.showDialogTaskFields = !this.showDialogTaskFields
       if(index != null)
         this.indexTaskSelected = index
-      this.saveLocalData();
     },
     toggleDelete(index) {
       this.showDialogDelete = !this.showDialogDelete
@@ -51,6 +52,10 @@ export const useTaskStore = defineStore('task', {
       if (tasks) {
         this.tasks = JSON.parse(tasks);
       }
+    },
+    toggleDoneTask(index) {
+      this.tasks[index].done = !this.tasks[index].done;
+      this.saveLocalData();
     }
   },
 })

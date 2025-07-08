@@ -7,7 +7,7 @@
 
 <script setup>
   import DefaultView from '@/layouts/View.vue'
-  import Alert from '@/components/Alert.vue'
+  import Alert from '@/components/shared/Alert.vue'
 
   import { useAlertStore } from '@/stores/alert.js'
   const alertStore = useAlertStore();

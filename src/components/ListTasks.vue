@@ -5,15 +5,16 @@
       lines="three"
       select-strategy="leaf"
     >
-      <v-list-subheader>General</v-list-subheader>
+      <v-list-subheader>Tasks</v-list-subheader>
       <v-list-item
         v-for="task, index in taskStore.tasks"
         :key="index"
         :value="index"
+        @click="taskStore.toggleDoneTask(index)"
       >
-        <template v-slot:prepend="{ isActive }">
+        <template v-slot:prepend="{  }">
           <v-list-item-action start>
-            <v-checkbox-btn :model-value="isActive"></v-checkbox-btn>
+            <v-checkbox-btn :model-value="task.done"></v-checkbox-btn>
           </v-list-item-action>
         </template>
 
@@ -57,8 +58,8 @@
 
 <script setup>
 import  { defineProps } from 'vue'
-import DialogTaskFields from '@/components/DialogTaskFields.vue'
-import DialogDelete from '@/components/DialogDelete.vue'
+import DialogTaskFields from '@/components/dialogs/DialogTaskFields.vue'
+import DialogDelete from '@/components/dialogs/DialogDelete.vue'
 import { useTaskStore } from '@/stores/task.js'
 
 const taskStore = useTaskStore();
